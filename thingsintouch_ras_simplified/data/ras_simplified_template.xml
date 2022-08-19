@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <record id="ras_simplified_template" model="iot.template">
+        <field name="name">thingsintouch.ras_simplified</field>
+    </record>
+    <record id="ras_template_input_async" model="iot.template.input">
+        <field name="template_id" ref="ras_simplified_template"/>
+        <field name="name">async_clocking</field>
+        <field name="call_model_id" ref="hr.model_hr_employee"/>
+        <field name="call_function">register_attendance_async</field>
+        <field name="params">{}</field>
+    </record>
+</odoo>
