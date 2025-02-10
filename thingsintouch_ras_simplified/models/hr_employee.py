@@ -16,5 +16,3 @@ class HrEmployee(models.Model):
         with freezegun.freeze_time(datetime.fromtimestamp(int(timestamp), tz=None)):
             result = self.register_attendance(card_code)
         return result
-
-
