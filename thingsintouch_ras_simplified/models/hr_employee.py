@@ -3,7 +3,7 @@
 
 from odoo import api, models
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 import freezegun
 
@@ -13,6 +13,9 @@ class HrEmployee(models.Model):
 
     @api.model
     def register_attendance_async(self, card_code, timestamp):
-        with freezegun.freeze_time(datetime.fromtimestamp(int(timestamp), tz=None)):
+        frozen_dt = datetime.fromtimestamp(int(timestamp), tz=timezone.utc).replace(
+            tzinfo=None
+        )
+        with freezegun.freeze_time(frozen_dt):
             result = self.register_attendance(card_code)
         return result
