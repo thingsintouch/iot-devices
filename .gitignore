@@ -127,3 +127,35 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Project specific
+oca.cfg
+/.vscode
+*/.vscode
+.vscode/settings.json
+
+# Distribution / packaging (extra)
+bin/
+*.eggs
+
+# PyCharm
+.idea
+
+# Eclipse
+.settings
+.mr.developer.cfg
+.project
+.pydevproject
+
+# Visual Studio cache/options directory
+.vs/
+
+# OSX files
+.DS_Store
+
+# Backup files
+*~
+*.swp
+
+# OCA rules
+!**/static/lib/
