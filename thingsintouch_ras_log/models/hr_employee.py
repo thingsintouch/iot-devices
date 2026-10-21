@@ -26,7 +26,7 @@ class HrEmployee(models.Model):
             "employee_id": res.get("employee_id"),
             "error_message": res.get("error_message"),
             "logged": res.get("logged"),
-            "action": res.get("action"),
+            "action": res.get("action") if res.get("action") else "undefined",
             "timestamp": fields.Datetime.now(),
         }
         return vals
