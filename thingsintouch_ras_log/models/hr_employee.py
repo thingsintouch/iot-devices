@@ -19,6 +19,8 @@ class HrEmployee(models.Model):
         return res
 
     def _prepare_attendance_rfid_log(self, res):
+        action_val = res.get("action")
+        safe_action = action_val if action_val in ("check_in", "check_out") else "undefined"
         vals = {
             "state": "success" if res.get("logged") else "failed",
             "rfid_card_code": res.get("rfid_card_code"),
@@ -26,7 +28,7 @@ class HrEmployee(models.Model):
             "employee_id": res.get("employee_id"),
             "error_message": res.get("error_message"),
             "logged": res.get("logged"),
-            "action": res.get("action") if res.get("action") else "undefined",
+            "action": safe_action,
             "timestamp": fields.Datetime.now(),
         }
         return vals
