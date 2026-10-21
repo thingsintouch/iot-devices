@@ -1,11 +1,11 @@
-# Copyright 2026 - nurezeit.de
+# Copyright 2026 - nurzeit.de
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
 from odoo import api, fields, models
 
 
-class HrEmployeeBase(models.AbstractModel):
-    _inherit = "hr.employee.base"
+class HrEmployee(models.Model):
+    _inherit = "hr.employee"
 
     @api.model
     def register_attendance(self, card_code, log=False):

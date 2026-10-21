@@ -1,40 +1,23 @@
 # Copyright 2026 - nurzeit.de
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
-from odoo import api, fields, models
+from odoo import api, models
 
 
-class HrEmployeeBase(models.AbstractModel):
-    _inherit = "hr.employee.base"
+class HrAttendance(models.Model):
+    _inherit = "hr.attendance"
 
-    @api.model
-    def register_attendance(self, card_code, log=False):
-        res = super().register_attendance(card_code)
-        new_log = self._prepare_attendance_rfid_log(res)
-        if log:
-            log.sudo().write(new_log)
-        else:
-            self.env["hr.attendance.rfid.log"].create(new_log)
-        res["in_rfid_log"] = True
-        return res
+    @api.model_create_multi
+    def create(self, vals_list):
+        custom_time = self.env.context.get('rfid_custom_timestamp')
+        if custom_time:
+            for vals in vals_list:
+                if 'check_in' in vals:
+                    vals['check_in'] = custom_time
+        return super().create(vals_list)
 
-    def _prepare_attendance_rfid_log(self, res):
-        vals = {
-            "state": "success" if res.get("logged") else "failed",
-            "rfid_card_code": res.get("rfid_card_code"),
-            "employee_name": res.get("employee_name"),
-            "employee_id": res.get("employee_id"),
-            "error_message": res.get("error_message"),
-            "logged": res.get("logged"),
-            "action": res.get("action"),
-            "timestamp": fields.Datetime.now(),
-        }
-        return vals
-
-    @api.model
-    def register_attendance_with_log(self, log):
-        # Inject the hardware timestamp into the context so the attendance 
-        # model can grab it during the create/write lifecycle before validation.
-        return self.with_context(
-            rfid_custom_timestamp=log.timestamp
-        ).register_attendance(log.rfid_card_code, log)
+    def write(self, vals):
+        custom_time = self.env.context.get('rfid_custom_timestamp')
+        if custom_time and 'check_out' in vals:
+            vals['check_out'] = custom_time
+        return super().write(vals)
