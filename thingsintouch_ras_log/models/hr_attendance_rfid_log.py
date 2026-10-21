@@ -44,7 +44,7 @@ class RfidAttendanceLog(models.Model):
 
     def action_open_wizard_assign_employee(self):
         action = self.env["ir.actions.actions"]._for_xml_id(
-            "hr_attendance_rfid_log.action_hr_rfid_log_assign_employee"
+            "thingsintouch_ras_log.action_hr_rfid_log_assign_employee"
         )
         action["context"] = {
             "default_rfid_card_code": self.rfid_card_code,
